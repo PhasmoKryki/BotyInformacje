@@ -1,151 +1,447 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informacje o zamówieniu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informacje o zamówieniu</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #1e1e2f, #12121b);
-        color: #e0e0e0;
-        margin: 0;
-        padding: 0;
-    }
+  * {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
 
-    header {
-        background: linear-gradient(90deg, #4a90e2, #1e3c72);
-        color: white;
-        padding: 25px 0;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
+  body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background: var(--tlo);
+    color: var(--tekst);
+    transition: background 0.5s, color 0.5s;
+    overflow-x: hidden;
+  }
 
-    header h1 {
-        margin: 0;
-        font-size: 2.2rem;
-        letter-spacing: 1px;
-    }
+  :root {
+    --tlo: linear-gradient(160deg, #0d0d0d 0%, #1a0000 100%);
+    --tekst: #f0f0f0;
+    --naglowek: #ff2b2b;
+    --akcent: #ff003c;
+    --karta: rgba(25, 25, 25, 0.95);
+    --obramowanie: rgba(255, 255, 255, 0.05);
+  }
 
-    main {
-        max-width: 900px;
-        margin: 30px auto;
-        padding: 0 20px;
-    }
+  body.jasny {
+    --tlo: linear-gradient(160deg, #f9f9fb 0%, #e3e9f2 100%);
+    --tekst: #202020;
+    --naglowek: #0056cc;
+    --akcent: #0077ff;
+    --karta: #ffffff;
+    --obramowanie: rgba(0, 0, 0, 0.1);
+  }
 
-    section {
-        background: linear-gradient(145deg, #2a2a3d, #1c1c28);
-        margin-bottom: 25px;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-        transition: transform 0.3s ease;
-    }
+  header {
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
 
-    section:hover {
-        transform: translateY(-5px);
-    }
+  header h1 {
+    color: var(--naglowek);
+    font-size: 2.6rem;
+    letter-spacing: 1.2px;
+    text-shadow: 0 0 15px var(--akcent);
+  }
 
-    section h2 {
-        color: #4a90e2;
-        margin-top: 0;
-        font-size: 1.5rem;
-        border-bottom: 2px solid #4a90e2;
-        padding-bottom: 5px;
-    }
+  main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 35px;
+    max-width: 1200px;
+    margin: 0 auto 80px;
+    padding: 0 25px;
+  }
 
-    ul {
-        list-style-type: disc;
-        margin-left: 20px;
-    }
+  section {
+    background: var(--karta);
+    border: 1px solid var(--obramowanie);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
 
-    .cennik-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+  section:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6),
+                0 0 25px var(--akcent);
+  }
 
-    .cennik-table th, .cennik-table td {
-        border: 1px solid #555;
-        padding: 10px;
-        text-align: left;
-        color: #e0e0e0;
-    }
+  section h2 {
+    margin-top: 0;
+    color: var(--naglowek);
+    border-bottom: 2px solid var(--naglowek);
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+  }
 
-    .cennik-table th {
-        background-color: #3a3a4d;
-    }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+  }
 
-    footer {
-        text-align: center;
-        padding: 20px 0;
-        background: linear-gradient(90deg, #1e1e2f, #12121b);
-        font-size: 0.9rem;
-        color: #999;
-        border-top: 1px solid #333;
-    }
+  ul li {
+    margin: 10px 0;
+    padding-left: 22px;
+    position: relative;
+  }
 
-    a {
-        color: #4a90e2;
-        text-decoration: none;
-    }
+  ul li::before {
+    content: "▹";
+    color: var(--akcent);
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+  }
 
-    a:hover {
-        text-decoration: underline;
-    }
+  footer {
+    text-align: center;
+    padding: 30px;
+    background: var(--karta);
+    border-top: 1px solid var(--obramowanie);
+    color: var(--tekst);
+    font-size: 0.95rem;
+  }
+
+  footer a {
+    color: var(--naglowek);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  footer a:hover {
+    color: var(--akcent);
+  }
+
+  .panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+  }
+
+  .panel button {
+    background: var(--naglowek);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+  }
+
+  .panel button:hover {
+    background: var(--akcent);
+  }
+
+  .menu-motywy {
+    display: none;
+    position: absolute;
+    right: 0;
+    margin-top: 10px;
+    background: var(--karta);
+    border: 1px solid var(--obramowanie);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .menu-motywy button {
+    display: block;
+    width: 100%;
+    background: none;
+    color: var(--tekst);
+    border: none;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+
+  .menu-motywy button:hover {
+    background: var(--naglowek);
+    color: #fff;
+  }
+
+  .widoczny {
+    display: block;
+  }
+
+  .cennik {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .pakiet {
+    border: 1px solid var(--obramowanie);
+    border-radius: 15px;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .pakiet h3 {
+    margin-top: 0;
+    color: var(--naglowek);
+  }
+
+  .discord-btn {
+    display: inline-block;
+    background: var(--naglowek);
+    color: #fff;
+    text-decoration: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: background 0.3s;
+  }
+
+  .discord-btn:hover {
+    background: var(--akcent);
+  }
+
+  @media (max-width: 768px) {
+    header h1 { font-size: 2.1rem; }
+    main { gap: 25px; padding: 0 15px; }
+  }
+  #faq {
+    background: var(--karta);
+    border: 1px solid var(--obramowanie);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  #faq h2 {
+    color: var(--naglowek);
+    border-bottom: 2px solid var(--naglowek);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  .faq-element {
+    border-bottom: 1px solid var(--obramowanie);
+    margin-bottom: 10px;
+  }
+
+  .faq-pytanie {
+    background: none;
+    border: none;
+    color: var(--tekst);
+    font-size: 1rem;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    padding: 12px 0;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+
+  .faq-pytanie:hover {
+    color: var(--akcent);
+  }
+
+  .faq-odpowiedz {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    color: var(--tekst);
+    padding-left: 10px;
+  }
+
+  .faq-element.aktywny .faq-odpowiedz {
+    max-height: 300px;
+  }
+
+  .faq-element.aktywny .faq-pytanie {
+    color: var(--akcent);
+  }
+
 </style>
-
 </head>
-<body>
-    <header>
-        <h1>Informacje o zamówieniu</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Proces zamówienia</h2>
-            <ul>
-                <li>Nie udostępniam kodu bota.</li>
-                <li>Po otrzymaniu bota wymagane jest wystawienie legit checka.</li>
-                <li>Opis bota zawiera informację, że jestem jego developerem.</li>
-                <li>Każda większa zmiana wymaga dodatkowej opłaty.</li>
-                <li>Nie oferuję zwrotów pieniędzy.</li>
-                <li>Czas oczekiwania jest podawany przy wycenie, maksymalna zmiana +7 dni.</li>
-                <li>Wyłudzanie hostingu, poprawek lub bota za darmo skutkuje blokadą lub przerwaniem prac i brakiem dalszego wsparcia.</li>
-            </ul>
-        </section>
+<body class="ciemny">
 
-        <section>
-            <h2>Hosting</h2>
-            <ul>
-                <li>5zł / miesiąc</li>
-                <li>14zł / 3 miesiące</li>
-            </ul>
-        </section>
+  <header>
+    <h1>Informacje o zamówieniu</h1>
+  </header>
 
-        <section>
-            <h2>Metody płatności</h2>
-            <ul>
-                <li>PayPal (tylko F&F)</li>
-                <li>Litecoin</li>
-                <li>PaySafeCard (wymagane zdjęcie paragonu)</li>
-                <li>Blik</li>
-                <li>Inne metody płatności do uzgodnienia</li>
-            </ul>
-        </section>
+  <main>
 
-        <section>
-            <h2>Dodatkowe opcje i rabaty</h2>
-            <ul>
-                <li>Chwilowo brak!</li>
-            </ul>
-        </section>
+    <section>
+      <h2>O mnie</h2>
+      <p>Cześć! Jestem <strong>Kryki</strong> - zajmuję się tworzeniem botów na serwery Discord.  
+      Każdy projekt traktuję indywidualnie, stawiając na jakość, niezawodność i przejrzysty kontakt z klientem.</p>
+    </section>
 
+    <section>
+      <h2>Dlaczego warto wybrać mnie?</h2>
+      <ul>
+        <li>Indywidualne podejście do każdego projektu.</li>
+        <li>Stały kontakt i szybkie odpowiedzi.</li>
+        <li>Terminowość i przejrzystość współpracy.</li>
+        <li>Bezpieczeństwo bota.</li>
+        <li>Stała współpraca, nawet po zakończeniu zamówienia.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Aktualności</h2>
+      <p><em>Przy zakupie bota za minimum 20zł - hosting na miesiąc GRATIS!</em>
+      <p><em>Przy zakupie bota za minimum 40zł - hosting na 3 miesiące GRATIS!</em></p>
+    </section>
+
+    <section>
+      <h2>Cennik pakietów</h2>
+      <div class="cennik">
+        <div class="pakiet">
+          <h3>Bot SHOP</h3>
+          <p>Opis funkcji: <em>Tickety, opinie, legit checki, czy legit, wiadomosci po boostach, konkursy, blacklist, tworzenie embedów, cenniki, dropy.</em></p>
+          <p><strong>Cena:</strong> 55zł + hosting</p>
+        </div>
+
+        <div class="pakiet">
+          <h3>Bot COMMUNITY</h3>
+          <p>Opis funkcji: <em>Tickety, weryfikacja, selfrole, powitania, tworzenie embedów, moderacja</em></p>
+          <p><strong>Cena:</strong> 25zł + hosting</p>
+        </div>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ – najczęstsze pytania</h2>
+      <div class="faq-lista">
+        <div class="faq-element">
+          <button class="faq-pytanie">Jak długo trwa stworzenie bota?</button>
+          <div class="faq-odpowiedz">
+            <p>Czas oczekiwania różni się od trudności zamówienia. Średni czas oczekiwania to 3–10 dni.</p>
+          </div>
+        </div>
+
+        <div class="faq-element">
+          <button class="faq-pytanie">Czy po wykonaniu projektu mogę prosić o poprawki?</button>
+          <div class="faq-odpowiedz">
+            <p>Tak, poprawki są możliwe do końca zamówienia w gratisie. Jednak dodanie kolejnych komend wiąże się z dodatkową zapłatą.</p>
+          </div>
+        </div>
+        
+        <div class="faq-element">
+          <button class="faq-pytanie">Jak wygląda proces płatności?</button>
+          <div class="faq-odpowiedz">
+            <p>Płatność może nastąpić przed rozpoczęciem lub po zakończeniu prac. Mogę potwierdzić płatność screenem, przykładowo z PayPala.</p>
+          </div>
+        </div>
+
+        <div class="faq-element">
+          <button class="faq-pytanie">Czy kod mojego bota jest prywatny?</button>
+          <div class="faq-odpowiedz">
+            <p>Tak, kod twojego bota jest na własnym hostingu i nikt poza mną nie ma do niego dostępu.</p>
+          </div>
+        </div>
+
+        <div class="faq-element">
+          <button class="faq-pytanie">Czy zajmujesz się też hostowaniem botów?</button>
+          <div class="faq-odpowiedz">
+            <p>Tak, hostuję również boty klientów napisane w JavaScript lub Pythonie.</p>
+          </div>
+        </div>
+
+        <div class="faq-element">
+          <button class="faq-pytanie">Jakie dane są potrzebne, by rozpocząć zlecenie?</button>
+          <div class="faq-odpowiedz">
+            <p>Informacje o tym, jakie chcesz w bocie komendy oraz funkcje, logo, baner i nazwa bota.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Partnerzy</h2>
+      <p>Współpracuję z różnymi projektami i osobami. Wymieniam ich poniżej.</p>
+      <ul>
+        <li>Mecat Shop - discord.gg/mecat</li>
+        <li>EduZone - soon...</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Proces zamówienia</h2>
+      <ul>
+        <li>Nie udostępniam kodu bota.</li>
+        <li>Po otrzymaniu bota wymagane jest wystawienie legit checka.</li>
+        <li>Opis bota zawiera informację, że jestem jego developerem.</li>
+        <li>Każda większa zmiana wymaga dodatkowej opłaty.</li>
+        <li>Nie oferuję zwrotów pieniędzy.</li>
+        <li>Czas oczekiwania jest podawany przy wycenie, maksymalna zmiana +7 dni.</li>
+        <li>Nieuczciwe działania skutkują zakończeniem współpracy i brakiem dalszego wsparcia.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Hosting</h2>
+      <ul>
+        <li>5 zł / miesiąc</li>
+        <li>14 zł / 3 miesiące</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Metody płatności</h2>
+      <ul>
+        <li>PayPal (Friends & Family)</li>
+        <li>Litecoin</li>
+        <li>PaySafeCard (ze zdjęciem paragonu)</li>
+        <li>Blik</li>
+        <li>Inne metody do uzgodnienia</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Kontakt</h2>
+      <p>Jeśli chcesz złożyć zamówienie, zapytać o wycenę lub współpracę - możesz skontaktować się ze mną tutaj:</p>
+      <ul>
+        <li>Discord: <strong>@kryyki / @kamien___</strong></li>
+        <li>E-mail: <strong>kryki@onet.pl</strong></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Portfolio</h2>
+      <p>Oto kilka serwerów Discord, na których działają moje boty:</p>
+      <ul>
+        <li><a href="https://discord.gg/XcmwnQkQjP" target="_blank">🔗 Mecat Shop</a></li>
+        <li><a href="https://discord.gg/FuJ2VCg5yZ" target="_blank">🔗 Proedit Store</a></li>
+      </ul>
+    </section>
         <section>
-            <h2>Portfolio</h2>
-            <p>Jeżeli chcesz moje portfolio - powiedz o tym.</p>
-        </section>
-    </main>
+      <h2>Wsparcie</h2>
+      <p>Jeżeli chcesz mnie wesprzeć, możesz wpłacić pieniądze tutaj:</p>
+      <ul>
+        <li>Litecoin: LTukFq9QLsHfmi7ZiQ83ebhsGxhjqqnKor</li>
+        <li>PayPal: krykix@wp.pl</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Kryki Dev</p>
+    <p><a href="https://discord.gg/mecat">Dołącz do Discorda</a></p>
+  </footer>
+<script>
+  document.querySelectorAll(".faq-pytanie").forEach(przycisk => {
+  przycisk.addEventListener("click", () => {
+    const element = przycisk.parentElement;
+    element.classList.toggle("aktywny");
+  });
+});
+
+</script>
 </body>
 </html>
-
-
